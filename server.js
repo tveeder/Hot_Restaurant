@@ -15,9 +15,9 @@ var PORT = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Star Wars Characters (DATA)
+// Customers (DATA)
 // =============================================================
-var characters = [
+var customers = [
   {
     name: "Yoda",
     email: "yoda@example.com",
@@ -55,19 +55,19 @@ app.get("/view", function (req, res) {
 });
 
 // Displays all characters
-app.get("/api/characters", function (req, res) {
-  return res.json(characters);
+app.get("/api/customers", function (req, res) {
+  return res.json(customers);
 });
 
 // Displays a single character, or returns false
-app.get("/api/characters/:character", function (req, res) {
-  var chosen = req.params.character;
+app.get("/api/customers/:customer", function (req, res) {
+  var chosen = req.params.customer;
 
   console.log(chosen);
 
-  for (var i = 0; i < characters.length; i++) {
-    if (chosen === characters[i].routeName) {
-      return res.json(characters[i]);
+  for (var i = 0; i < customers.length; i++) {
+    if (chosen === customers[i].routeName) {
+      return res.json(customers[i]);
     }
   }
 
@@ -75,20 +75,20 @@ app.get("/api/characters/:character", function (req, res) {
 });
 
 // Create New Characters - takes in JSON input
-app.post("/api/characters", function (req, res) {
+app.post("/api/customers", function (req, res) {
   // req.body hosts is equal to the JSON post sent from the user
   // This works because of our body parsing middleware
-  var newCharacter = req.body;
+  var newCustomer = req.body;
 
   // Using a RegEx Pattern to remove spaces from newCharacter
   // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
-  newCharacter.routeName = newCharacter.name.replace(/\s+/g, "").toLowerCase();
+  newCustomer.routeName = newCustomer.name.replace(/\s+/g, "").toLowerCase();
 
-  console.log(newCharacter);
+  console.log(newCustomer);
 
-  characters.push(newCharacter);
+  customers.push(newCustomer);
 
-  res.json(newCharacter);
+  res.json(newCustomer);
 });
 
 // Starts the server to begin listening
