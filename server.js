@@ -35,6 +35,24 @@ var customers = [
     email: "obi@example.com",
     customerID: "obi1234",
     phone_number: "9879879876"
+  },
+  {
+    name: "Obi Wan Kenobi",
+    email: "obi@example.com",
+    customerID: "obi1234",
+    phone_number: "9879879876"
+  },
+  {
+    name: "Obi Wan Kenobi",
+    email: "obi@example.com",
+    customerID: "obi1234",
+    phone_number: "9879879876"
+  },
+  {
+    name: "Obi Wan Kenobi",
+    email: "obi@example.com",
+    customerID: "obi1234",
+    phone_number: "9879879876"
   }
 ];
 
@@ -43,15 +61,15 @@ var customers = [
 
 // Basic route that sends the user first to the AJAX Page
 app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(__dirname, "./index.html"));
 });
 
 app.get("/add", function (req, res) {
-  res.sendFile(path.join(__dirname, "add.html"));
+  res.sendFile(path.join(__dirname, "./add.html"));
 });
 
 app.get("/view", function (req, res) {
-  res.sendFile(path.join(__dirname, "view.html"));
+  res.sendFile(path.join(__dirname, "./view.html"));
 });
 
 // Displays all characters
@@ -82,7 +100,7 @@ app.post("/api/customers", function (req, res) {
 
   // Using a RegEx Pattern to remove spaces from newCharacter
   // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
-  newCustomer.routeName = newCustomer.name.replace(/\s+/g, "").toLowerCase();
+  // newCustomer.routeName = newCustomer.name.replace(/\s+/g, "").toLowerCase();
 
   console.log(newCustomer);
 
