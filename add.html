@@ -71,7 +71,7 @@
     <footer class="footer">
       <div class="container">
         <p>
-          <a href="/api/tables">API Table Link</a> |
+          <a href="/api/view">API Table Link</a> |
           <a href="/api/waitlist">API Wait List</a>
       </div>
     </footer>
@@ -107,7 +107,7 @@
     // The callback is the response of the server. In our case, we set up code in api-routes that "returns" true or false
     // depending on if a tables is available or not.
 
-    $.post("/api/tables", newReservation,
+    $.post("/api/customers", newReservation,
       function(data) {
 
         // If a table is available... tell user they are booked.
