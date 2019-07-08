@@ -1,14 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
-  <title>Star Wars - Express</title>
+  <title>Reservation Page</title>
+
   <!-- Latest compiled and minified CSS & JS -->
-  <link rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://code.jquery.com/jquery.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
@@ -17,77 +17,122 @@
 <body>
 
   <div class="container">
+
     <div class="jumbotron">
-      <h1>Star Wars Express</h1>
-      <h3>The greatest resource in the galaxy for Star Wars statistics!</h3>
+      <h1 class="text-center">
+        <span class="fa fa-fire"></span> Hot Restaurant</h1>
       <hr>
-      <a href="/add"><button class="btn btn-danger btn-lg"><span class="fa fa-plus"></span> Add New
-          Character</button></a>
-      <a href="/api/characters"><button class="btn btn-danger btn-lg"><span
-            class="fa fa-eye"></span> All Characters</button></a>
+      <h2 class="text-center">Make your reservation</h2>
+      <br>
+      <div class="text-center">
+        <a href="/tables">
+          <button class="btn btn-lg btn-primary">
+            <span class="fa fa-list-alt"></span> View Tables</button>
+        </a>
+        <a href="/">
+          <button class="btn btn-lg btn-default">
+            <span class="fa fa-home"></span>
+          </button>
+        </a>
+      </div>
     </div>
     <div class="row">
-
-      <div class="col-12">
-
-        <div class="card mb-4">
-          <div class="card-header">
-            <h3><strong>Character Search</strong></h3>
-          </div>
-          <div class="card-body">
-            <input type="text" id="character-search" class="form-control">
-            <br>
-            <div class="text-right">
-              <button type="submit" class="btn btn-primary btn-md" id="search-btn"><span
-                  class="fa fa-search"></span> Search
-                Your Feelings. You know it is true.</button>
-
-            </div>
-          </div>
-        </div>
-
+      <div class="col-lg-12">
+        <!-- Reservation Page -->
         <div class="card">
           <div class="card-header">
-            <h3><strong>Character Statistics</strong></h3>
+            Table Reservation
           </div>
           <div class="card-body">
-            <h2 id="name">Yoda</h2>
-            <div id="stats">
-              <h3><strong>Role:</strong> <span id="role">Jedi Master</span></h3>
-              <h3><strong>Age:</strong> <span id="age">900</span></h3>
-              <h3><strong>Force Points:</strong> <span id="force-points">2000</span></h3>
-            </div>
+            <form role="form">
+              <div class="form-group">
+                <label for="reserve-name">Name</label>
+                <input type="text" class="form-control" id="reserve-name">
+              </div>
+              <div class="form-group">
+                <label for="reserve-phone">Phone Number</label>
+                <input type="text" class="form-control" id="reserve-phone">
+              </div>
+              <div class="form-group">
+                <label for="reserve-email">Email</label>
+                <input type="text" class="form-control" id="reserve-email">
+              </div>
+              <div class="form-group">
+                <label for="reserve-unique-id">Unique ID</label>
+                <input type="text" class="form-control" id="reserve-unique-id">
+              </div>
+              <button type="submit" class="btn btn-primary submit">Submit</button>
+            </form>
           </div>
         </div>
       </div>
     </div>
+
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          <a href="/api/tables">API Table Link</a> |
+          <a href="/api/waitlist">API Wait List</a>
+      </div>
+    </footer>
+
   </div>
 
-  <script type="text/javascript">
-    $("#search-btn").on("click", function() {
-      var searchedCharacter = $("#character-search").val().trim();
+</body>
 
-      // Using a RegEx Pattern to remove spaces from searchedCharacter
-      // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
-      searchedCharacter = searchedCharacter.replace(/\s+/g, "").toLowerCase();
+</html>
 
-      $.get("/api/characters/" + searchedCharacter, function(data) {
-        console.log(data);
+<!-- BELOW CODE IS CRITICAL. IT HANDLES HOW FORM DATA IS SENT TO OUR SERVER -->
+<script type="text/javascript">
+  // In this code below we create the Front-end JavaScript which "POSTS" our form data to our express server.
+  // In essence, when the user hits submit, jQuery grabs all of the fields then sends a post request to our api
+  // Our api recognizes the route (/api/tables)... and then runs the associated code (found in api-routes.js).
+  // In this case the associated code "saves" the data to the table-data.js file or waitinglist-data.js file
+
+  $(".submit").on("click", function(event) {
+    event.preventDefault();
+
+    // Here we grab the form elements
+    var newReservation = {
+      customerName: $("#reserve-name").val().trim(),
+      phoneNumber: $("#reserve-phone").val().trim(),
+      customerEmail: $("#reserve-email").val().trim(),
+      customerID: $("#reserve-unique-id").val().trim()
+    };
+
+    console.log(newReservation);
+
+    // This line is the magic. It"s very similar to the standard ajax function we used.
+    // Essentially we give it a URL, we give it the object we want to send, then we have a "callback".
+    // The callback is the response of the server. In our case, we set up code in api-routes that "returns" true or false
+    // depending on if a tables is available or not.
+
+    $.post("/api/tables", newReservation,
+      function(data) {
+
+        // If a table is available... tell user they are booked.
         if (data) {
-          $("#stats").show();
-          $("#name").text(data.name);
-          $("#role").text(data.role);
-          $("#age").text(data.age);
-          $("#force-points").text(data.forcePoints);
-        } else {
-          $("#name").text(
-            "The force is not strong with this one. Your character was not found.");
-          $("#stats").hide();
+          alert("Yay! You are officially booked!");
         }
-      });
-    });
 
-  </script>
+        // If a table is available... tell user they on the waiting list.
+        else {
+          alert("Sorry you are on the wait list");
+        }
+
+        // Clear the form when submitting
+        $("#reserve-name").val("");
+        $("#reserve-phone").val("");
+        $("#reserve-email").val("");
+        $("#reserve-unique-id").val("");
+
+      });
+
+  });
+
+</script>
+
 </body>
 
 </html>
